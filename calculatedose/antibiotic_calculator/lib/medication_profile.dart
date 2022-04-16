@@ -24,18 +24,31 @@ class MedProfile extends StatefulWidget {
 class _MedProfileState extends State<MedProfile> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          widget.medType,
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+    return Container(
+      padding: const EdgeInsets.all(5),
+      child: Visibility(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              widget.medType,
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+            ),
+            const Text(
+              "Dose Range:",
+              style: TextStyle(fontSize: 14, color: Colors.blue),
+            ),
+            Text(widget.range),
+            if (widget.severe != "") Text(widget.severe),
+            const Text(
+              "Administration:",
+              style: TextStyle(fontSize: 14, color: Colors.blue),
+            ),
+            Text(widget.takeMax),
+            Text(widget.extraInformation),
+          ],
         ),
-        Text(widget.range),
-        Text(widget.takeMax),
-        Text(widget.severe),
-        Text(widget.extraInformation),
-      ],
+      ),
     );
   }
 }

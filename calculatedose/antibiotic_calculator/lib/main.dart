@@ -1,8 +1,12 @@
 // ignore_for_file: prefer_const_constructors
+import 'package:antibiotic_calculator/defaultMessage.dart';
 import 'package:antibiotic_calculator/medication_profile.dart';
+import 'package:antibiotic_calculator/message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:core';
+
+bool calculate = false;
 
 class Medication {
   double? dose;
@@ -22,9 +26,6 @@ class AntiDose extends StatefulWidget {
   @override
   _AntiDoseState createState() => _AntiDoseState();
 }
-
-bool calculate = false;
-var medForMessage;
 
 final amoxil = Medication(15, 25, 25, 30);
 final amoxilForte = Medication(15, 50, 25, 30);
@@ -124,18 +125,21 @@ class _AntiDoseState extends State<AntiDose> {
                         ),
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton<String>(
-                              hint: Text("Select a Medication",
-                                  style: TextStyle(
-                                      fontSize: 18, color: Colors.black)),
-                              value: value,
-                              iconSize: 36,
-                              isExpanded: true,
-                              icon: Icon(Icons.arrow_drop_down,
-                                  color: Colors.black),
-                              items: antibiotics.map(buildMenuItem).toList(),
-                              onChanged: (value) {
-                                setState(() => this.value = value);
-                              }),
+                            hint: Text("Select a Medication",
+                                style: TextStyle(
+                                    fontSize: 18, color: Colors.black)),
+                            value: value,
+                            iconSize: 36,
+                            isExpanded: true,
+                            icon: Icon(Icons.arrow_drop_down,
+                                color: Colors.black),
+                            items: antibiotics.map(buildMenuItem).toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                this.value = value;
+                              });
+                            },
+                          ),
                         ),
                       ),
                     ),
@@ -146,7 +150,7 @@ class _AntiDoseState extends State<AntiDose> {
                         child: TextFormField(
                           onChanged: (myController) {
                             setState(() {
-                              doseMessage = "Input a medication and weight.";
+                              calculate = false;
                             });
                           },
                           controller: myController,
@@ -178,20 +182,12 @@ class _AntiDoseState extends State<AntiDose> {
                       child: ElevatedButton(
                         onPressed: () {
                           FocusScope.of(context).unfocus();
-                          if (value == null || myController.text == "") {
-                            doseMessage = "Input a medication and weight";
-                          } else if (int.tryParse(myController.text)! >= 200) {
-                            setState(() {
-                              calculate == false;
-                              doseMessage =
-                                  "This is not a correct weight, please enter again";
-                            });
-                          } else {
-                            setState(() {
-                              calculate == true;
-                              dose(value!, myController);
-                            });
-                          }
+                          setState(() {
+                            calculate = true;
+                            Message(
+                                medication: value!,
+                                input: int.tryParse(myController.text)!);
+                          });
                         },
                         child: Text(
                           'Calculate',
@@ -218,7 +214,9 @@ class _AntiDoseState extends State<AntiDose> {
                         padding: EdgeInsets.all(15),
                         margin: EdgeInsets.fromLTRB(15, 15, 15, 15),
                         width: 500,
-                        child: defaultMessage(),
+                        child: Message(
+                            medication: value ?? "",
+                            input: int.tryParse(myController.text) ?? 0),
                       ),
                     ),
                   ]),
@@ -237,10 +235,9 @@ class _AntiDoseState extends State<AntiDose> {
       );
 }
 
-void dose(String medication, TextEditingController controller) {
-  double? weight = double.tryParse(controller.text);
+Widget dose(String medication, int weight) {
   if (medication == "Amoxycillin") {
-    double amoxilmL = amoxil.dose! * weight! / amoxil.concentration!;
+    double amoxilmL = amoxil.dose! * weight / amoxil.concentration!;
     double amoxilmg = amoxil.dose! * weight;
     double amoxilRangemL = amoxil.range! * weight / amoxil.concentration!;
     double amoxilRangemg = amoxil.range! * weight;
@@ -255,22 +252,14 @@ void dose(String medication, TextEditingController controller) {
     double amoxilForteSevere =
         amoxilForte.severe! * weight / amoxilForte.concentration!;
     double amoxilForteSeveremg = amoxilForte.severe! * weight;
-    medForMessage ==
-        MedProfile(
-            medType: "Amoxycillin 125/50",
-            range:
-                "  ${amoxilmL.toStringAsFixed(2).toString()}mL(${amoxilmg.toStringAsFixed(0).toString()}mg) to ${amoxilRangemL.toStringAsFixed(2).toString()}mL(${amoxilRangemg.toStringAsFixed(0).toString()}mg)",
-            takeMax: "Every 8 hours (Max. 500mg)",
-            severe: "",
-            extraInformation: "");
-    return;
-  }
-}
-
-Widget defaultMessage() {
-  if (calculate == false) {
-    return Text("This is not okay");
+    return MedProfile(
+        medType: "Amoxycillin 125/50",
+        range:
+            "${amoxilmL.toStringAsFixed(2).toString()}mL(${amoxilmg.toStringAsFixed(0).toString()}mg) to ${amoxilRangemL.toStringAsFixed(2).toString()}mL(${amoxilRangemg.toStringAsFixed(0).toString()}mg)",
+        takeMax: "Every 8 hours (Max. 500mg)",
+        severe: "",
+        extraInformation: "");
   } else {
-    return medForMessage();
+    return Text("This is null");
   }
 }
