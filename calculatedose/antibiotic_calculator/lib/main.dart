@@ -1,12 +1,21 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:antibiotic_calculator/defaultMessage.dart';
-import 'package:antibiotic_calculator/medication_profile.dart';
 import 'package:antibiotic_calculator/message.dart';
+import 'package:antibiotic_calculator/message_builders/amoxycillin.dart';
+import 'package:antibiotic_calculator/message_builders/amoxycillin_with_clavulanic.dart';
+import 'package:antibiotic_calculator/message_builders/azithromycin.dart';
+import 'package:antibiotic_calculator/message_builders/cefaclor.dart';
+import 'package:antibiotic_calculator/message_builders/cefuroxime.dart';
+import 'package:antibiotic_calculator/message_builders/cephalaxin.dart';
+import 'package:antibiotic_calculator/message_builders/clarithromycin.dart';
+import 'package:antibiotic_calculator/message_builders/erythromycin.dart';
+import 'package:antibiotic_calculator/message_builders/phenoxymethylpenicillin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:core';
 
 bool calculate = false;
+bool clearText = false;
 
 class Medication {
   double? dose;
@@ -29,31 +38,22 @@ class AntiDose extends StatefulWidget {
 
 final amoxil = Medication(15, 25, 25, 30);
 final amoxilForte = Medication(15, 50, 25, 30);
-final amoxClavAcid = Medication(7.5, 25, 15, 20);
+final amoxClavAcid25 = Medication(7.5, 25, 15, 20);
 final amoxClavAcid80 = Medication(22.5, 80, null, null);
-final azithromycin = Medication(
-    10,
-    40,
-    5 /*concentration for 4 day treatment / higher dose refer to book!!! can be given over 3 days pending on infec*/,
-    null);
-final cefaclor = Medication(10, 25, 15, null); /* every 8 hours */
+final azithromycin = Medication(10, 40, 5, null);
+final cefaclor = Medication(10, 25, 15, null);
 final cefaclor50 = Medication(10, 50, 15, null);
-final cefuroxime = Medication(
-    10 /*for 3 months-2 years*/,
-    25,
-    15 /*for 2-12 years*/,
-    null); /*Max 125mg for 3-2 & 250mg 2-12 up to 500mg bd has been used | best absorbed with food*/
+final cefuroxime = Medication(10, 25, 15, null);
 final cephalexin25 = Medication(6.25, 25, 12.5, null);
 final cephalexin50 =
     Medication(6.25, 50, 12.5, null); /*max dose 500mg every 6 hours*/
-final clarithromycin = Medication(7.5, 50, null, null); /*max dose 500mg bd */
-final erithromycin = Medication(
+final clarithromycin = Medication(7.5, 50, 15, null); /*max dose 500mg bd */
+final erythromycin40 = Medication(
     10, 40, null, null); /*Give every 6 hours max 4 grams daily for severe inf*/
-final erithromycin80 = Medication(10, 80, null, null);
-final phenoxymethylpenicillin25 =
-    Medication(10, 20, 12.5, null); /*max 500mg, given every 6 hours*/
-final phenoxymethylpenicillin30 = Medication(10, 20, 12.5, null);
-final phenoxymethylpenicillin50 = Medication(10, 20, 12.5, null);
+final erythromycin80 = Medication(10, 80, null, null);
+final phenoxymethylpenicillin25 = Medication(10, 25, 12.5, null);
+final phenoxymethylpenicillin30 = Medication(10, 30, 12.5, null);
+final phenoxymethylpenicillin50 = Medication(10, 50, 12.5, null);
 
 class _AntiDoseState extends State<AntiDose> {
   final antibiotics = [
@@ -136,6 +136,7 @@ class _AntiDoseState extends State<AntiDose> {
                             items: antibiotics.map(buildMenuItem).toList(),
                             onChanged: (value) {
                               setState(() {
+                                calculate = false;
                                 this.value = value;
                               });
                             },
@@ -185,8 +186,8 @@ class _AntiDoseState extends State<AntiDose> {
                           setState(() {
                             calculate = true;
                             Message(
-                                medication: value!,
-                                input: int.tryParse(myController.text)!);
+                                medication: value ?? "",
+                                input: int.tryParse(myController.text) ?? 0);
                           });
                         },
                         child: Text(
@@ -204,7 +205,7 @@ class _AntiDoseState extends State<AntiDose> {
                       ),
                     ),
                     Flexible(
-                      flex: 3,
+                      flex: 4,
                       fit: FlexFit.tight,
                       child: Container(
                         decoration: BoxDecoration(
@@ -237,29 +238,32 @@ class _AntiDoseState extends State<AntiDose> {
 
 Widget dose(String medication, int weight) {
   if (medication == "Amoxycillin") {
-    double amoxilmL = amoxil.dose! * weight / amoxil.concentration!;
-    double amoxilmg = amoxil.dose! * weight;
-    double amoxilRangemL = amoxil.range! * weight / amoxil.concentration!;
-    double amoxilRangemg = amoxil.range! * weight;
-    double amoxilFortemL =
-        amoxilForte.dose! * weight / amoxilForte.concentration!;
-    double amoxilFortemg = amoxilForte.dose! * weight;
-    double amoxilForteRangemL =
-        amoxilForte.range! * weight / amoxilForte.concentration!;
-    double amoxilForteRangemg = amoxilForte.range! * weight;
-    double amoxilSevere = amoxil.severe! * weight / amoxil.concentration!;
-    double amoxilSeveremg = amoxil.severe! * weight;
-    double amoxilForteSevere =
-        amoxilForte.severe! * weight / amoxilForte.concentration!;
-    double amoxilForteSeveremg = amoxilForte.severe! * weight;
-    return MedProfile(
-        medType: "Amoxycillin 125/50",
-        range:
-            "${amoxilmL.toStringAsFixed(2).toString()}mL(${amoxilmg.toStringAsFixed(0).toString()}mg) to ${amoxilRangemL.toStringAsFixed(2).toString()}mL(${amoxilRangemg.toStringAsFixed(0).toString()}mg)",
-        takeMax: "Every 8 hours (Max. 500mg)",
-        severe: "",
-        extraInformation: "");
+    return Amoxycillin(weight: weight);
+  }
+  if (medication == "Amoxycillin With Clavulanic Acid") {
+    return AmoxWithClav(weight: weight);
+  }
+  if (medication == "Azithromycin") {
+    return Azithryomycin(weight: weight);
+  }
+  if (medication == "Cefaclor") {
+    return Cefaclor(weight: weight);
+  }
+  if (medication == "Cefuroxime") {
+    return Cefuroxime(weight: weight);
+  }
+  if (medication == "Cephalexin") {
+    return Cephalexin(weight: weight);
+  }
+  if (medication == "Clarithromycin") {
+    return Clarithromycin(weight: weight);
+  }
+  if (medication == "Erythromycin") {
+    return Erythromycin(weight: weight);
+  }
+  if (medication == "Phenoxymethylpenicillin") {
+    return Phenoxymethylpenicillin(weight: weight);
   } else {
-    return Text("This is null");
+    return DefaultMessage();
   }
 }

@@ -1,4 +1,3 @@
-import 'package:antibiotic_calculator/main.dart';
 import 'package:flutter/material.dart';
 
 class DefaultMessage extends StatelessWidget {
@@ -6,6 +5,8 @@ class DefaultMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Text("This is working");
+    return const Text("Input a medication & weight.",
+        style: TextStyle(color: Colors.grey, fontSize: 18),
+        textAlign: TextAlign.left);
   }
 }

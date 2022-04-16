@@ -24,30 +24,32 @@ class MedProfile extends StatefulWidget {
 class _MedProfileState extends State<MedProfile> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(5),
-      child: Visibility(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              widget.medType,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-            ),
-            const Text(
-              "Dose Range:",
-              style: TextStyle(fontSize: 14, color: Colors.blue),
-            ),
-            Text(widget.range),
-            if (widget.severe != "") Text(widget.severe),
-            const Text(
-              "Administration:",
-              style: TextStyle(fontSize: 14, color: Colors.blue),
-            ),
-            Text(widget.takeMax),
-            Text(widget.extraInformation),
-          ],
-        ),
+    return Visibility(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            widget.medType,
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+          ),
+          const Text(
+            "Dose Range:",
+            style: TextStyle(fontSize: 15, color: Colors.blue),
+          ),
+          Text(widget.range, style: const TextStyle(fontSize: 15)),
+          if (widget.severe != "")
+            const Text("Severe Infection:",
+                style: TextStyle(fontSize: 15, color: Colors.blue)),
+          if (widget.severe != "")
+            Text(widget.severe, style: const TextStyle(fontSize: 16)),
+          const Text(
+            "Interval of Administration:",
+            style: TextStyle(fontSize: 15, color: Colors.blue),
+          ),
+          if (widget.takeMax != "")
+            Text(widget.takeMax, style: const TextStyle(fontSize: 15)),
+          Text(widget.extraInformation, style: const TextStyle(fontSize: 15)),
+        ],
       ),
     );
   }
