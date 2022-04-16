@@ -51,8 +51,8 @@ class _Phenoxymethylpenicillin extends State<Phenoxymethylpenicillin> {
             medType: "Phenoxymethylpenicillin 25mg/mL",
             range:
                 "${phenoxymethylpenicillin25mL.toStringAsFixed(2).toString()}mL (${phenoxymethylpenicillin25mg.toStringAsFixed(0).toString()}mg) to ${phenoxymethylpenicillinRange25mL.toStringAsFixed(2).toString()}mL (${phenoxymethylpenicillinRange25mg.toStringAsFixed(0).toString()}mg)",
-            takeMax: "",
-            severe: "",
+            takeMax: "Every 6 hours (Max. 500mg)",
+            severe: "In cases of severe infection, Max. 1g",
             extraInformation: ""),
         MedProfile(
             medType: "Phenoxymethylpenicillin 30mg/mL",
@@ -66,7 +66,7 @@ class _Phenoxymethylpenicillin extends State<Phenoxymethylpenicillin> {
             range:
                 "${phenoxymethylpenicillin50mL.toStringAsFixed(2).toString()}mL (${phenoxymethylpenicillin50mg.toStringAsFixed(0).toString()}mg) to ${phenoxymethylpenicillinRange50mL.toStringAsFixed(2).toString()}mL (${phenoxymethylpenicillinRange50mg.toStringAsFixed(0).toString()}mg)",
             takeMax: "Every 6 hours (Max. 500mg)",
-            severe: "In cases of severe infection, Max. 1g",
+            severe: "",
             extraInformation: ""),
       ],
     );

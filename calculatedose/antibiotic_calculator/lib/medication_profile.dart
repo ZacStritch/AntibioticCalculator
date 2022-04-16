@@ -42,10 +42,11 @@ class _MedProfileState extends State<MedProfile> {
                 style: TextStyle(fontSize: 15, color: Colors.blue)),
           if (widget.severe != "")
             Text(widget.severe, style: const TextStyle(fontSize: 16)),
-          const Text(
-            "Interval of Administration:",
-            style: TextStyle(fontSize: 15, color: Colors.blue),
-          ),
+          if (widget.takeMax != "")
+            const Text(
+              "Interval of Administration:",
+              style: TextStyle(fontSize: 15, color: Colors.blue),
+            ),
           if (widget.takeMax != "")
             Text(widget.takeMax, style: const TextStyle(fontSize: 15)),
           Text(widget.extraInformation, style: const TextStyle(fontSize: 15)),

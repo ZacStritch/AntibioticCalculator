@@ -27,14 +27,14 @@ class _Erythromycin extends State<Erythromycin> {
             range:
                 "${erythromycin40mL.toStringAsFixed(2).toString()}mL (${erythromycin40mg.toStringAsFixed(0).toString()}mg)",
             takeMax: "Every 6 hours (Max. 500mg)",
-            severe: "In cases of severe infection, Max. 1g",
+            severe: "In cases of severe infection (Max. 1g)",
             extraInformation: ""),
         MedProfile(
             medType: "Erythromycin 80mg/mL",
             range:
                 "${erythromycin80mL.toStringAsFixed(2).toString()}mL (${erythromycin80mg.toStringAsFixed(0).toString()}mg)",
             takeMax: "Every 6 hours (Max. 500mg)",
-            severe: "In cases of severe infection, Max. 1g",
+            severe: "In cases of severe infection (Max. 1g)",
             extraInformation: ""),
       ],
     );

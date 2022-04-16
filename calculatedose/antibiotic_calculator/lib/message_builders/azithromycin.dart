@@ -27,7 +27,7 @@ class _Azithryomycin extends State<Azithryomycin> {
             range:
                 ">6 months of age - ${azithromycinmL.toStringAsFixed(2).toString()}mL (${azithromycinmg.toStringAsFixed(0).toString()}mg)",
             takeMax:
-                "Administered once on day 1 (Max. 500mg); then once daily for 2 days OR ${azithromycinRangemL.toStringAsFixed(2).toString()}mL (${azithromycinRangemg.toStringAsFixed(0).toString()}mg) once daily for 4 days (Max. 250mg).",
+                "Administered once on day 1 (Max. 500mg); then once daily for 2 days. OR ${azithromycinRangemL.toStringAsFixed(2).toString()}mL (${azithromycinRangemg.toStringAsFixed(0).toString()}mg) once daily for 4 days (Max. 250mg).",
             severe: "",
             extraInformation: ""),
       ],

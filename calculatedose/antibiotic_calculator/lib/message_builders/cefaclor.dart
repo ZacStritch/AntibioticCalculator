@@ -32,14 +32,14 @@ class _Cefaclor extends State<Cefaclor> {
             medType: "Cefaclor 25mg/mL",
             range:
                 "${cefaclormL.toStringAsFixed(2).toString()}mL (${cefaclormg.toStringAsFixed(0).toString()}mg) to ${cefaclorRangemL.toStringAsFixed(2).toString()}mL (${cefaclorRangemg.toStringAsFixed(0).toString()}mg)",
-            takeMax: "Every 8 hours cc (Max. 500mg)",
+            takeMax: "With food every 8 hours (Max. 500mg)",
             severe: "",
             extraInformation: ""),
         MedProfile(
             medType: "Cefaclor 50mg/mL",
             range:
                 "${cefaclor50mL.toStringAsFixed(2).toString()}mL (${cefaclor50mg.toStringAsFixed(0).toString()}mg) to ${cefaclor50RangemL.toStringAsFixed(2).toString()}mL (${cefaclor50Rangemg.toStringAsFixed(0).toString()}mg)",
-            takeMax: "Every 8 hours cc (Max. 500mg)",
+            takeMax: "With food every 8 hours (Max. 500mg)",
             severe: "",
             extraInformation: ""),
       ],

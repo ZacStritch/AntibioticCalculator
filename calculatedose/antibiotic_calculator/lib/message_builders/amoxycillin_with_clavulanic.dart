@@ -43,7 +43,8 @@ class _AmoxWithClavState extends State<AmoxWithClav> {
             range:
                 "${amoxClavAcid80mL.toStringAsFixed(2).toString()}mL (${amoxClavAcid80mg.toStringAsFixed(0).toString()}mg)",
             takeMax: "With food every 12 hours (Max. 875mg)",
-            severe: "",
+            severe:
+                "Up to ${amoxClavAcid25SeveremL.toStringAsFixed(2).toString()}mL (${amoxClavAcid25Severemg.toStringAsFixed(0).toString()}mg)",
             extraInformation: ""),
       ],
     );
