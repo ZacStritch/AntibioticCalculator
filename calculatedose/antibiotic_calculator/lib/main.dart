@@ -253,7 +253,8 @@ class _AntiDoseState extends State<AntiDose> {
                                   controller: myController,
                                   keyboardType: TextInputType.number,
                                   inputFormatters: <TextInputFormatter>[
-                                    FilteringTextInputFormatter.digitsOnly
+                                    FilteringTextInputFormatter.digitsOnly,
+                                    LengthLimitingTextInputFormatter(3),
                                   ],
                                   decoration: (InputDecoration(
                                     border: OutlineInputBorder(

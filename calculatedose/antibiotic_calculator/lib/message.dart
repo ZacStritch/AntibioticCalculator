@@ -16,7 +16,7 @@ class Message extends StatefulWidget {
 class _MessageState extends State<Message> {
   @override
   Widget build(BuildContext context) {
-    if (calculate == false) {
+    if (calculate == false || widget.input == 0) {
       return const DefaultMessage();
     } else {
       return dose(widget.medication, widget.input);
