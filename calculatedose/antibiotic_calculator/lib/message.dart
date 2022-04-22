@@ -1,4 +1,4 @@
-import 'package:antibiotic_calculator/defaultMessage.dart';
+import 'package:antibiotic_calculator/default_message.dart';
 import 'package:antibiotic_calculator/main.dart';
 import 'package:flutter/material.dart';
 

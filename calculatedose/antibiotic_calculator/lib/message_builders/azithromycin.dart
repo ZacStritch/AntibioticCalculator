@@ -1,5 +1,3 @@
-import 'package:antibiotic_calculator/main.dart';
-import 'package:antibiotic_calculator/medication_profile.dart';
 import 'package:flutter/material.dart';
 
 class Azithryomycin extends StatefulWidget {
@@ -13,23 +11,26 @@ class Azithryomycin extends StatefulWidget {
 class _Azithryomycin extends State<Azithryomycin> {
   @override
   Widget build(BuildContext context) {
-    double azithromycinmL =
-        azithromycin.dose! * widget.weight / azithromycin.concentration!;
-    double azithromycinmg = azithromycin.dose! * widget.weight;
-    double azithromycinRangemL =
-        azithromycin.range! * widget.weight / azithromycin.concentration!;
-    double azithromycinRangemg = azithromycin.range! * widget.weight;
+    double azithromycinmL = 10 * widget.weight / 40;
+    double azithromycinmg = 10.0 * widget.weight;
+    double azithromycinRangemL = 5 * widget.weight / 40;
+    double azithromycinRangemg = 5.0 * widget.weight;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        MedProfile(
-            medType: "Azithromycin 40mg/mL",
-            range:
-                ">6 months of age - ${azithromycinmL.toStringAsFixed(2).toString()}mL (${azithromycinmg.toStringAsFixed(0).toString()}mg)",
-            takeMax:
-                "Administered once on day 1 (Max. 500mg); then once daily for 2 days. OR ${azithromycinRangemL.toStringAsFixed(2).toString()}mL (${azithromycinRangemg.toStringAsFixed(0).toString()}mg) once daily for 4 days (Max. 250mg).",
-            severe: "",
-            extraInformation: ""),
+        const Text("Azithromycin 40mg/mL",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+        const Text("Dose Range (>6 months):",
+            style: TextStyle(fontSize: 15, color: Colors.blue)),
+        Text(
+            "${azithromycinmL.toStringAsFixed(2).toString()}mL (${azithromycinmg.toStringAsFixed(0).toString()}mg)"),
+        const Text("Interval of Administration:",
+            style: TextStyle(fontSize: 15, color: Colors.blue)),
+        Text(
+            "Administered once on day 1 (Max. 500mg); then once daily for 2 days. Alternatively, after day 1, ${azithromycinRangemL.toStringAsFixed(2).toString()}mL (${azithromycinRangemg.toStringAsFixed(0).toString()}mg) can be taken once daily for 4 days (Max. 250mg)"),
+        const Text(
+            "The higher dose can be given for >3 days depending on the infection",
+            style: TextStyle(color: Colors.red)),
       ],
     );
   }

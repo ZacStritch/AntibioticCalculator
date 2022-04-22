@@ -1,29 +1,16 @@
 // ignore_for_file: prefer_const_constructors
-import 'package:antibiotic_calculator/defaultMessage.dart';
-import 'package:antibiotic_calculator/message.dart';
-import 'package:antibiotic_calculator/message_builders/amoxycillin.dart';
-import 'package:antibiotic_calculator/message_builders/amoxycillin_with_clavulanic.dart';
-import 'package:antibiotic_calculator/message_builders/azithromycin.dart';
-import 'package:antibiotic_calculator/message_builders/cefaclor.dart';
-import 'package:antibiotic_calculator/message_builders/cefuroxime.dart';
-import 'package:antibiotic_calculator/message_builders/cephalaxin.dart';
-import 'package:antibiotic_calculator/message_builders/clarithromycin.dart';
-import 'package:antibiotic_calculator/message_builders/erythromycin.dart';
-import 'package:antibiotic_calculator/message_builders/phenoxymethylpenicillin.dart';
+import 'package:antibiotic_calculator/message_builders/all_builders.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:core';
+import 'default_message.dart';
+import 'message.dart';
 
+Icon iconSelect = Icon(Icons.search);
 bool calculate = false;
 bool clearText = false;
-
-class Medication {
-  double? dose;
-  double? concentration;
-  double? range;
-  double? severe;
-  Medication(this.dose, this.concentration, this.range, this.severe);
-}
+bool hidden = true;
+final TextEditingController medController = TextEditingController();
 
 void main() {
   runApp(const MaterialApp(home: AntiDose()));
@@ -36,49 +23,54 @@ class AntiDose extends StatefulWidget {
   _AntiDoseState createState() => _AntiDoseState();
 }
 
-final amoxil = Medication(15, 25, 25, 30);
-final amoxilForte = Medication(15, 50, 25, 30);
-final amoxClavAcid25 = Medication(7.5, 25, 15, 20);
-final amoxClavAcid80 = Medication(22.5, 80, null, null);
-final azithromycin = Medication(10, 40, 5, null);
-final cefaclor = Medication(10, 25, 15, null);
-final cefaclor50 = Medication(10, 50, 15, null);
-final cefuroxime = Medication(10, 25, 15, null);
-final cephalexin25 = Medication(6.25, 25, 12.5, null);
-final cephalexin50 =
-    Medication(6.25, 50, 12.5, null); /*max dose 500mg every 6 hours*/
-final clarithromycin = Medication(7.5, 50, 15, null); /*max dose 500mg bd */
-final erythromycin40 = Medication(
-    10, 40, null, null); /*Give every 6 hours max 4 grams daily for severe inf*/
-final erythromycin80 = Medication(10, 80, null, null);
-final phenoxymethylpenicillin25 = Medication(10, 25, 12.5, null);
-final phenoxymethylpenicillin30 = Medication(10, 30, 12.5, null);
-final phenoxymethylpenicillin50 = Medication(10, 50, 12.5, null);
-
 class _AntiDoseState extends State<AntiDose> {
-  final antibiotics = [
-    'Amoxycillin',
-    'Amoxycillin With Clavulanic Acid',
-    'Azithromycin',
-    'Cefaclor',
-    'Cefuroxime',
-    'Cephalexin',
-    'Clarithromycin',
-    'Erythromycin',
-    'Phenoxymethylpenicillin',
+  final List<Map<String, dynamic>> _allMedication = [
+    {"name": "Amoxycillin", "class": "Penicillins"},
+    {"name": "Azithromycin", "class": "Macrolides"},
+    {"name": "Amoxycillin With Clavulanic Acid", "class": "Penicillins"},
+    {"name": "Cefaclor", "class": "Cephalosporins"},
+    {"name": "Cefuroxime", "class": "Cephalossporins"},
+    {"name": "Cephalexin", "class": "Cephalosporins"},
+    {"name": "Clarithromycin", "class": "Macrolides"},
+    {"name": "Erythromycin", "class": "Macrolides"},
+    {"name": "Phenoxymethylpenicillin", "class": "Penicillins"},
+    {"name": "blank", "class": "blank"},
   ];
 
   String? value;
   String? medChoice;
   String doseMessage = "Input a medication and weight.";
   bool textChange = false;
+  int showFlex = 1;
 
   final myController = TextEditingController();
+
+  List<Map<String, dynamic>> _foundMedication = [];
 
   @override
   void initState() {
     FocusManager.instance.primaryFocus?.unfocus();
+    _foundMedication = _allMedication;
     super.initState();
+  }
+
+  void _runSearch(String enteredKeyword) {
+    List<Map<String, dynamic>> results = [];
+    if (enteredKeyword.isEmpty) {
+      // if the search field is empty or only contains white-space, we'll display all medications
+      results = _allMedication;
+    } else {
+      results = _allMedication
+          .where((medication) => medication["name"]
+              .toLowerCase()
+              .startsWith(enteredKeyword.toLowerCase()))
+          .toList();
+    }
+
+    // Refresh the UI
+    setState(() {
+      _foundMedication = results;
+    });
   }
 
   @override
@@ -89,10 +81,16 @@ class _AntiDoseState extends State<AntiDose> {
 
   @override
   Widget build(BuildContext context) {
+    _allMedication.sort((a, b) => a["name"].compareTo(b["name"]));
     return GestureDetector(
         onTap: () {
           FocusScopeNode currentFocus = FocusScope.of(context);
           if (!currentFocus.hasPrimaryFocus) {
+            hidden = true;
+            if (medController.text == "") {
+              iconSelect = Icon(Icons.search);
+            }
+            showFlex = 1;
             currentFocus.unfocus();
           }
         },
@@ -109,131 +107,213 @@ class _AntiDoseState extends State<AntiDose> {
             child: Container(
               constraints:
                   BoxConstraints(maxWidth: MediaQuery.of(context).size.width),
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Flexible(
-                      flex: 1,
-                      child: Container(
-                        margin: EdgeInsets.fromLTRB(14, 0, 14, 0),
-                        padding: EdgeInsets.fromLTRB(15, 7, 10, 7),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton<String>(
-                            hint: Text("Select a Medication",
-                                style: TextStyle(
-                                    fontSize: 18, color: Colors.black)),
-                            value: value,
-                            iconSize: 36,
-                            isExpanded: true,
-                            icon: Icon(Icons.arrow_drop_down,
-                                color: Colors.black),
-                            items: antibiotics.map(buildMenuItem).toList(),
-                            onChanged: (value) {
-                              setState(() {
-                                calculate = false;
-                                this.value = value;
-                              });
-                            },
+              child: Visibility(
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Flexible(
+                        flex: showFlex,
+                        child: Container(
+                          padding: EdgeInsets.all(10),
+                          child: Column(
+                            children: [
+                              TextField(
+                                controller: medController,
+                                onTap: () {
+                                  setState(() {
+                                    if (medController.text != "") {
+                                      iconSelect = Icon(Icons.clear);
+                                    }
+                                    calculate = false;
+                                    hidden = false;
+                                    showFlex = 6;
+                                  });
+                                },
+                                onChanged: (value) {
+                                  setState(() {
+                                    iconSelect = Icon(Icons.clear);
+                                    _runSearch(value);
+                                    calculate = false;
+                                  });
+                                },
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(15),
+                                      borderSide:
+                                          BorderSide(color: Colors.white)),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.white),
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  fillColor: Colors.white,
+                                  filled: true,
+                                  suffixStyle: TextStyle(color: Colors.black),
+                                  labelStyle: TextStyle(
+                                      fontSize: 18, color: Colors.black),
+                                  hintText: 'Search',
+                                  hintStyle: TextStyle(fontSize: 18),
+                                  suffixIcon: IconButton(
+                                    icon: iconSelect,
+                                    onPressed: () {
+                                      setState(() {
+                                        hidden = false;
+                                        showFlex = 1;
+                                        _runSearch("");
+                                        iconSelect = Icon(Icons.search);
+                                        medController.clear();
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              if (hidden != true)
+                                Expanded(
+                                  child: _foundMedication.isNotEmpty
+                                      ? ListView.builder(
+                                          itemCount: _foundMedication.length,
+                                          itemBuilder: (context, index) => Card(
+                                            key: ValueKey(
+                                                _foundMedication[index]["id"]),
+                                            color: Colors.white,
+                                            margin: const EdgeInsets.symmetric(
+                                                vertical: 10),
+                                            child: ListTile(
+                                              onTap: () {
+                                                FocusScope.of(context)
+                                                    .unfocus();
+                                                setState(() {
+                                                  iconSelect =
+                                                      Icon(Icons.clear);
+                                                  hidden = true;
+                                                  showFlex = 1;
+                                                  medController.text =
+                                                      "${_foundMedication[index]['name']}";
+                                                  medController.selection =
+                                                      TextSelection.fromPosition(
+                                                          TextPosition(
+                                                              offset:
+                                                                  medController
+                                                                      .text
+                                                                      .length));
+                                                });
+                                              },
+                                              title: Text(
+                                                  "${_foundMedication[index]['name']}"),
+                                              subtitle: Text(
+                                                  "${_foundMedication[index]['class']}"),
+                                            ),
+                                          ),
+                                        )
+                                      : const Text(
+                                          'No Medication Found',
+                                          style: TextStyle(fontSize: 16),
+                                        ),
+                                ),
+                            ],
                           ),
                         ),
                       ),
-                    ),
-                    Flexible(
-                      flex: 1,
-                      child: Container(
-                        padding: EdgeInsets.all(14),
-                        child: TextFormField(
-                          onChanged: (myController) {
-                            setState(() {
-                              calculate = false;
-                            });
-                          },
-                          controller: myController,
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
-                          decoration: (InputDecoration(
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(15),
-                                  borderSide: BorderSide(color: Colors.white)),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white),
-                                borderRadius: BorderRadius.circular(15),
+                      if (hidden == true)
+                        Flexible(
+                          flex: 1,
+                          child: Column(
+                            children: [
+                              Container(
+                                padding: EdgeInsets.all(10),
+                                child: TextFormField(
+                                  autofocus: true,
+                                  onChanged: (myController) {
+                                    setState(() {
+                                      hidden = true;
+                                      calculate = false;
+                                    });
+                                  },
+                                  controller: myController,
+                                  keyboardType: TextInputType.number,
+                                  inputFormatters: <TextInputFormatter>[
+                                    FilteringTextInputFormatter.digitsOnly
+                                  ],
+                                  decoration: (InputDecoration(
+                                      border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                          borderSide:
+                                              BorderSide(color: Colors.white)),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide:
+                                            BorderSide(color: Colors.white),
+                                        borderRadius: BorderRadius.circular(15),
+                                      ),
+                                      fillColor: Colors.white,
+                                      filled: true,
+                                      suffixStyle:
+                                          TextStyle(color: Colors.black),
+                                      suffixText: 'kg',
+                                      labelStyle: TextStyle(
+                                          fontSize: 18, color: Colors.black),
+                                      hintText: 'Input Weight',
+                                      hintStyle: TextStyle(fontSize: 18))),
+                                ),
                               ),
-                              fillColor: Colors.white,
-                              filled: true,
-                              suffixStyle: TextStyle(color: Colors.black),
-                              suffixText: 'kg',
-                              labelStyle:
-                                  TextStyle(fontSize: 18, color: Colors.black),
-                              hintText: 'Input Weight',
-                              hintStyle: TextStyle(fontSize: 18))),
+                            ],
+                          ),
                         ),
-                      ),
-                    ),
-                    Flexible(
-                      flex: 1,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          FocusScope.of(context).unfocus();
-                          setState(() {
-                            calculate = true;
-                            Message(
-                                medication: value ?? "",
-                                input: int.tryParse(myController.text) ?? 0);
-                          });
-                        },
-                        child: Text(
-                          'Calculate',
-                        ),
-                        style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15)),
-                            primary: Color(0xFF0080FF),
-                            textStyle: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
+                      if (hidden == true)
+                        Flexible(
+                          flex: 1,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              FocusScope.of(context).unfocus();
+                              setState(() {
+                                calculate = true;
+                                Message(
+                                    medication: value ?? "",
+                                    input:
+                                        int.tryParse(myController.text) ?? 0);
+                              });
+                            },
+                            child: Text(
+                              'Calculate',
                             ),
-                            fixedSize: const Size(160, 50)),
-                      ),
-                    ),
-                    Flexible(
-                      flex: 4,
-                      fit: FlexFit.tight,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(15),
+                            style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15)),
+                                primary: Color(0xFF0080FF),
+                                textStyle: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                fixedSize: const Size(160, 50)),
+                          ),
                         ),
-                        padding: EdgeInsets.all(15),
-                        margin: EdgeInsets.fromLTRB(15, 15, 15, 15),
-                        width: 500,
-                        child: Message(
-                            medication: value ?? "",
-                            input: int.tryParse(myController.text) ?? 0),
-                      ),
-                    ),
-                  ]),
+                      if (hidden == true)
+                        Flexible(
+                          flex: 4,
+                          fit: FlexFit.tight,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            padding: EdgeInsets.all(10),
+                            margin: EdgeInsets.fromLTRB(15, 15, 15, 15),
+                            width: 500,
+                            child: Message(
+                                medication: medController.text,
+                                input: int.tryParse(myController.text) ?? 0),
+                          ),
+                        ),
+                    ]),
+              ),
             ),
           ),
         ));
   }
-
-  DropdownMenuItem<String> buildMenuItem(String antibiotics) =>
-      DropdownMenuItem(
-        value: antibiotics,
-        child: Text(
-          antibiotics,
-          style: TextStyle(fontSize: 18),
-        ),
-      );
 }
 
 Widget dose(String medication, int weight) {
@@ -265,5 +345,85 @@ Widget dose(String medication, int weight) {
     return Phenoxymethylpenicillin(weight: weight);
   } else {
     return DefaultMessage();
+  }
+}
+
+class DrugOutput extends StatefulWidget {
+  final String name;
+  final String administration;
+  final double concentration;
+  final double standard;
+  final double range;
+  final double severe;
+  final int weight;
+  const DrugOutput(
+      {Key? key,
+      required this.name,
+      required this.administration,
+      required this.concentration,
+      required this.standard,
+      required this.range,
+      required this.severe,
+      required this.weight})
+      : super(key: key);
+
+  @override
+  State<DrugOutput> createState() => DrugOutputState();
+}
+
+class DrugOutputState extends State<DrugOutput> {
+  @override
+  Widget build(BuildContext context) {
+    String rangeMessage;
+    String severeMessage;
+    double standardmL = widget.standard * widget.weight / widget.concentration;
+    double standardmg = widget.standard * widget.weight;
+    double rangemL = widget.range * widget.weight / widget.concentration;
+    double rangemg = widget.range * widget.weight;
+    double severemL = widget.severe * widget.weight / widget.concentration;
+    double severemg = widget.severe * widget.weight;
+    if (standardmg != 0 && rangemg != 0) {
+      rangeMessage =
+          "${standardmL.toStringAsFixed(2).toString()}mL (${standardmg.toStringAsFixed(0).toString()}mg) to ${rangemL.toStringAsFixed(2).toString()}mL (${rangemg.toStringAsFixed(0).toString()}mg)";
+    } else {
+      rangeMessage =
+          "${standardmL.toStringAsFixed(2).toString()}mL (${standardmg.toStringAsFixed(0).toString()}mg)";
+    }
+    if (severemL != 0) {
+      severeMessage =
+          "${severemL.toStringAsFixed(2).toString()}mL (${severemg.toStringAsFixed(0).toString()}mg)";
+    } else {
+      severeMessage = "";
+    }
+
+    return Visibility(
+      maintainAnimation: false,
+      maintainSize: false,
+      maintainState: false,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            widget.name,
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+          ),
+          const Text(
+            "Dose Range:",
+            style: TextStyle(fontSize: 15, color: Colors.blue),
+          ),
+          Text(rangeMessage),
+          if (severeMessage != "")
+            const Text("Severe Infection:",
+                style: TextStyle(fontSize: 15, color: Colors.blue)),
+          if (severeMessage != "") Text(severeMessage),
+          if (widget.administration != "")
+            const Text(
+              "Interval of Administration:",
+              style: TextStyle(fontSize: 15, color: Colors.blue),
+            ),
+          if (widget.administration != "") Text(widget.administration),
+        ],
+      ),
+    );
   }
 }
