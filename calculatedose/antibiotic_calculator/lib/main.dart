@@ -125,60 +125,56 @@ class _AntiDoseState extends State<AntiDose> {
                           padding: EdgeInsets.all(10),
                           child: Column(
                             children: [
-                              AnimatedSwitcher(
-                                duration: const Duration(seconds: 0),
-                                child: TextField(
-                                  style: TextStyle(fontSize: 18),
-                                  controller: medController,
-                                  onTap: () {
-                                    medController.selection =
-                                        TextSelection.fromPosition(TextPosition(
-                                            offset: medController.text.length));
-                                    setState(() {
-                                      if (medController.text != "") {
-                                        iconSelect = Icon(Icons.clear);
-                                      }
-                                      calculate = false;
-                                      hidden = false;
-                                      showFlex = 6;
-                                    });
-                                  },
-                                  onChanged: (value) {
-                                    setState(() {
+                              TextField(
+                                style: TextStyle(fontSize: 18),
+                                controller: medController,
+                                onTap: () {
+                                  medController.selection =
+                                      TextSelection.fromPosition(TextPosition(
+                                          offset: medController.text.length));
+                                  setState(() {
+                                    if (medController.text != "") {
                                       iconSelect = Icon(Icons.clear);
-                                      _runSearch(value);
-                                      calculate = false;
-                                    });
-                                  },
-                                  decoration: InputDecoration(
-                                    border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(15),
-                                        borderSide:
-                                            BorderSide(color: Colors.white)),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Colors.white),
+                                    }
+                                    calculate = false;
+                                    hidden = false;
+                                    showFlex = 6;
+                                  });
+                                },
+                                onChanged: (value) {
+                                  setState(() {
+                                    iconSelect = Icon(Icons.clear);
+                                    _runSearch(value);
+                                    calculate = false;
+                                  });
+                                },
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(15),
-                                    ),
-                                    fillColor: Colors.white,
-                                    filled: true,
-                                    suffixStyle: TextStyle(color: Colors.black),
-                                    labelStyle: TextStyle(
-                                        fontSize: 18, color: Colors.black),
-                                    hintText: 'Search',
-                                    hintStyle: TextStyle(fontSize: 18),
-                                    suffixIcon: IconButton(
-                                      icon: iconSelect,
-                                      onPressed: () {
-                                        setState(() {
-                                          hidden = false;
-                                          showFlex = 1;
-                                          _runSearch("");
-                                          iconSelect = Icon(Icons.search);
-                                          medController.clear();
-                                        });
-                                      },
-                                    ),
+                                      borderSide:
+                                          BorderSide(color: Colors.white)),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.white),
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  fillColor: Colors.white,
+                                  filled: true,
+                                  suffixStyle: TextStyle(color: Colors.black),
+                                  labelStyle: TextStyle(
+                                      fontSize: 18, color: Colors.black),
+                                  hintText: 'Search',
+                                  hintStyle: TextStyle(fontSize: 18),
+                                  suffixIcon: IconButton(
+                                    icon: iconSelect,
+                                    onPressed: () {
+                                      setState(() {
+                                        hidden = false;
+                                        showFlex = 1;
+                                        _runSearch("");
+                                        iconSelect = Icon(Icons.search);
+                                        medController.clear();
+                                      });
+                                    },
                                   ),
                                 ),
                               ),
