@@ -41,6 +41,7 @@ class _AntiDoseState extends State<AntiDose> {
     {"name": "Fluconazole", "class": "Azoles"},
     {"name": "Itraconazole", "class": "Azoles"},
     {"name": "Prednisolone", "class": "Corticosteroids"},
+    {"name": "Trimethoprim With Sulfamethoxazole", "class": "Antibacterial"},
   ];
 
   String? value;
@@ -185,50 +186,57 @@ class _AntiDoseState extends State<AntiDose> {
                                 height: 10,
                               ),
                               if (hidden != true)
-                                Expanded(
-                                  child: _foundMedication.isNotEmpty
-                                      ? ListView.builder(
-                                          keyboardDismissBehavior:
-                                              ScrollViewKeyboardDismissBehavior
-                                                  .onDrag,
-                                          itemCount: _foundMedication.length,
-                                          itemBuilder: (context, index) => Card(
-                                            key: ValueKey(
-                                                _foundMedication[index]["id"]),
-                                            color: Colors.white,
-                                            margin: const EdgeInsets.symmetric(
-                                                vertical: 10),
-                                            child: ListTile(
-                                              onTap: () {
-                                                FocusScope.of(context)
-                                                    .unfocus();
-                                                setState(() {
-                                                  iconSelect =
-                                                      Icon(Icons.clear);
-                                                  hidden = true;
-                                                  showFlex = 1;
-                                                  medController.text =
-                                                      "${_foundMedication[index]['name']}";
-                                                  medController.selection =
-                                                      TextSelection.fromPosition(
-                                                          TextPosition(
-                                                              offset:
-                                                                  medController
-                                                                      .text
-                                                                      .length));
-                                                });
-                                              },
-                                              title: Text(
-                                                  "${_foundMedication[index]['name']}"),
-                                              subtitle: Text(
-                                                  "${_foundMedication[index]['class']}"),
+                                SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.65,
+                                  child: Expanded(
+                                    child: _foundMedication.isNotEmpty
+                                        ? ListView.builder(
+                                            keyboardDismissBehavior:
+                                                ScrollViewKeyboardDismissBehavior
+                                                    .onDrag,
+                                            itemCount: _foundMedication.length,
+                                            itemBuilder: (context, index) =>
+                                                Card(
+                                              key: ValueKey(
+                                                  _foundMedication[index]
+                                                      ["id"]),
+                                              color: Colors.white,
+                                              margin:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 10),
+                                              child: ListTile(
+                                                onTap: () {
+                                                  FocusScope.of(context)
+                                                      .unfocus();
+                                                  setState(() {
+                                                    iconSelect =
+                                                        Icon(Icons.clear);
+                                                    hidden = true;
+                                                    showFlex = 1;
+                                                    medController.text =
+                                                        "${_foundMedication[index]['name']}";
+                                                    medController.selection =
+                                                        TextSelection.fromPosition(
+                                                            TextPosition(
+                                                                offset:
+                                                                    medController
+                                                                        .text
+                                                                        .length));
+                                                  });
+                                                },
+                                                title: Text(
+                                                    "${_foundMedication[index]['name']}"),
+                                                subtitle: Text(
+                                                    "${_foundMedication[index]['class']}"),
+                                              ),
                                             ),
+                                          )
+                                        : const Text(
+                                            'No Medication Found',
+                                            style: TextStyle(fontSize: 16),
                                           ),
-                                        )
-                                      : const Text(
-                                          'No Medication Found',
-                                          style: TextStyle(fontSize: 16),
-                                        ),
+                                  ),
                                 ),
                             ],
                           ),
@@ -242,7 +250,6 @@ class _AntiDoseState extends State<AntiDose> {
                               Container(
                                 padding: EdgeInsets.all(10),
                                 child: TextFormField(
-                                  autofocus: true,
                                   onChanged: (myController) {
                                     setState(() {
                                       hidden = true;
@@ -379,6 +386,9 @@ Widget dose(String medication, int weight) {
   }
   if (medication == "Prednisolone") {
     return Prednisolone(weight: weight);
+  }
+  if (medication == "Trimethoprim With Sulfamethoxazole") {
+    return TrimethoprimSulfamethoxazole(weight: weight);
   } else {
     return DefaultMessage();
   }

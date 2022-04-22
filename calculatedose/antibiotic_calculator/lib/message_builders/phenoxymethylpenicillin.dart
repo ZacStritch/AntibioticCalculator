@@ -43,7 +43,7 @@ class Phenoxymethylpenicillin extends StatelessWidget {
           "Interval of Administration:",
           style: TextStyle(fontSize: 15, color: Colors.blue),
         ),
-        const Text("1 month to 18 years; every 6 hours (Max. 500mg)"),
+        const Text("1 month to 18 years; every 6 hours (Max. 500mg)."),
       ],
     );
   }

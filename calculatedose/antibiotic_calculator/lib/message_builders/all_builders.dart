@@ -14,3 +14,4 @@ export 'linezolid.dart';
 export 'fluconazole.dart';
 export 'itraconazole.dart';
 export 'prednisolone.dart';
+export 'trimethoprim_sulfamethoxazole.dart';
