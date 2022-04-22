@@ -33,7 +33,7 @@ class Cefaclor extends StatelessWidget {
           "Interval of Administration:",
           style: TextStyle(fontSize: 15, color: Colors.blue),
         ),
-        const Text("With food every 8 hours (Max. 500mg)"),
+        const Text("With food every 8 hours (Max. 500mg)."),
       ],
     );
   }

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../main.dart';
 
-class Erythromycin extends StatelessWidget {
+class Flucloxacillin extends StatelessWidget {
   final int weight;
-  const Erythromycin({Key? key, required this.weight}) : super(key: key);
+  const Flucloxacillin({Key? key, required this.weight}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -12,20 +12,20 @@ class Erythromycin extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         DrugOutput(
-            name: "Erythromycin 40mg/mL",
+            name: "Flucloxacillin 25mg/mL",
             administration: "",
-            concentration: 40,
-            standard: 10,
-            range: 0,
+            concentration: 25,
+            standard: 12.5,
+            range: 25,
             severe: 0,
             weight: weight),
         const Text(""),
         DrugOutput(
-            name: "Erythromycin 80mg/mL",
+            name: "Flucloxacillin 50mg/mL",
             administration: "",
-            concentration: 80,
-            standard: 10,
-            range: 0,
+            concentration: 50,
+            standard: 12.5,
+            range: 25,
             severe: 0,
             weight: weight),
         const Text(""),
@@ -34,7 +34,7 @@ class Erythromycin extends StatelessWidget {
           style: TextStyle(fontSize: 15, color: Colors.blue),
         ),
         const Text(
-            "Take 1 hour before or 2 hours after meals every 6 hours (Max. 500mg). In cases of severe infection (Max. 4 grams daily)."),
+            "Every 6 hours on an empty stomach at least half an hour before or 2 hours after food."),
       ],
     );
   }

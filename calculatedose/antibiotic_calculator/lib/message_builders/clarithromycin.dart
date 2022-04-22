@@ -33,7 +33,7 @@ class Clarithromycin extends StatelessWidget {
           "Interval of Administration:",
           style: TextStyle(fontSize: 15, color: Colors.blue),
         ),
-        const Text("Twice daily (Max. 500mg)"),
+        const Text("Twice daily (Max. 500mg)."),
       ],
     );
   }

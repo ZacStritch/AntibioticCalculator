@@ -14,7 +14,7 @@ class Cefuroxime extends StatelessWidget {
         DrugOutput(
             name: '''Cefuroxime 25mg/mL 
 (3 Months - 2 Years)''',
-            administration: "With food twice a day (Max. 125mg)",
+            administration: "With food twice a day (Max. 125mg).",
             concentration: 25,
             standard: 10,
             range: 15,
@@ -25,7 +25,7 @@ class Cefuroxime extends StatelessWidget {
             name: '''Cefuroxime 25mg/mL 
 (2 - 12 Years)''',
             administration:
-                "With food twice a day (Max. 250mg); Up to 500mg has been administered before",
+                "With food twice a day (Max. 250mg); Up to 500mg has been administered before.",
             concentration: 50,
             standard: 10,
             range: 15,

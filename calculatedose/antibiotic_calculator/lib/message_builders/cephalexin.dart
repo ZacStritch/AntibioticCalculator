@@ -33,7 +33,7 @@ class Cephalexin extends StatelessWidget {
           "Interval of Administration:",
           style: TextStyle(fontSize: 15, color: Colors.blue),
         ),
-        const Text("Every 6 hours (Max. 500mg)"),
+        const Text("Every 6 hours (Max. 500mg)."),
       ],
     );
   }

@@ -34,7 +34,13 @@ class _AntiDoseState extends State<AntiDose> {
     {"name": "Clarithromycin", "class": "Macrolides"},
     {"name": "Erythromycin", "class": "Macrolides"},
     {"name": "Phenoxymethylpenicillin", "class": "Penicillins"},
-    {"name": "blank", "class": "blank"},
+    {"name": "Metronidazole", "class": "Nitroimidazoles"},
+    {"name": "Flucloxacillin", "class": "Penicillins"},
+    {"name": "Rifampicin/Rifampin", "class": "Rifamycins"},
+    {"name": "Linezolid", "class": "Oxazolidinone Antibacterial"},
+    {"name": "Fluconazole", "class": "Azoles"},
+    {"name": "Itraconazole", "class": "Azoles"},
+    {"name": "Prednisolone", "class": "Corticosteroids"},
   ];
 
   String? value;
@@ -75,7 +81,6 @@ class _AntiDoseState extends State<AntiDose> {
 
   @override
   void dispose() {
-    // Clean up the controller when the widget is disposed.
     super.dispose();
   }
 
@@ -119,52 +124,60 @@ class _AntiDoseState extends State<AntiDose> {
                           padding: EdgeInsets.all(10),
                           child: Column(
                             children: [
-                              TextField(
-                                controller: medController,
-                                onTap: () {
-                                  setState(() {
-                                    if (medController.text != "") {
+                              AnimatedSwitcher(
+                                duration: const Duration(seconds: 0),
+                                child: TextField(
+                                  style: TextStyle(fontSize: 18),
+                                  controller: medController,
+                                  onTap: () {
+                                    medController.selection =
+                                        TextSelection.fromPosition(TextPosition(
+                                            offset: medController.text.length));
+                                    setState(() {
+                                      if (medController.text != "") {
+                                        iconSelect = Icon(Icons.clear);
+                                      }
+                                      calculate = false;
+                                      hidden = false;
+                                      showFlex = 6;
+                                    });
+                                  },
+                                  onChanged: (value) {
+                                    setState(() {
                                       iconSelect = Icon(Icons.clear);
-                                    }
-                                    calculate = false;
-                                    hidden = false;
-                                    showFlex = 6;
-                                  });
-                                },
-                                onChanged: (value) {
-                                  setState(() {
-                                    iconSelect = Icon(Icons.clear);
-                                    _runSearch(value);
-                                    calculate = false;
-                                  });
-                                },
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(15),
+                                      _runSearch(value);
+                                      calculate = false;
+                                    });
+                                  },
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(15),
+                                        borderSide:
+                                            BorderSide(color: Colors.white)),
+                                    enabledBorder: OutlineInputBorder(
                                       borderSide:
-                                          BorderSide(color: Colors.white)),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.white),
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
-                                  fillColor: Colors.white,
-                                  filled: true,
-                                  suffixStyle: TextStyle(color: Colors.black),
-                                  labelStyle: TextStyle(
-                                      fontSize: 18, color: Colors.black),
-                                  hintText: 'Search',
-                                  hintStyle: TextStyle(fontSize: 18),
-                                  suffixIcon: IconButton(
-                                    icon: iconSelect,
-                                    onPressed: () {
-                                      setState(() {
-                                        hidden = false;
-                                        showFlex = 1;
-                                        _runSearch("");
-                                        iconSelect = Icon(Icons.search);
-                                        medController.clear();
-                                      });
-                                    },
+                                          BorderSide(color: Colors.white),
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    fillColor: Colors.white,
+                                    filled: true,
+                                    suffixStyle: TextStyle(color: Colors.black),
+                                    labelStyle: TextStyle(
+                                        fontSize: 18, color: Colors.black),
+                                    hintText: 'Search',
+                                    hintStyle: TextStyle(fontSize: 18),
+                                    suffixIcon: IconButton(
+                                      icon: iconSelect,
+                                      onPressed: () {
+                                        setState(() {
+                                          hidden = false;
+                                          showFlex = 1;
+                                          _runSearch("");
+                                          iconSelect = Icon(Icons.search);
+                                          medController.clear();
+                                        });
+                                      },
+                                    ),
                                   ),
                                 ),
                               ),
@@ -175,6 +188,9 @@ class _AntiDoseState extends State<AntiDose> {
                                 Expanded(
                                   child: _foundMedication.isNotEmpty
                                       ? ListView.builder(
+                                          keyboardDismissBehavior:
+                                              ScrollViewKeyboardDismissBehavior
+                                                  .onDrag,
                                           itemCount: _foundMedication.length,
                                           itemBuilder: (context, index) => Card(
                                             key: ValueKey(
@@ -239,25 +255,24 @@ class _AntiDoseState extends State<AntiDose> {
                                     FilteringTextInputFormatter.digitsOnly
                                   ],
                                   decoration: (InputDecoration(
-                                      border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(15),
-                                          borderSide:
-                                              BorderSide(color: Colors.white)),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderSide:
-                                            BorderSide(color: Colors.white),
+                                    border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(15),
-                                      ),
-                                      fillColor: Colors.white,
-                                      filled: true,
-                                      suffixStyle:
-                                          TextStyle(color: Colors.black),
-                                      suffixText: 'kg',
-                                      labelStyle: TextStyle(
-                                          fontSize: 18, color: Colors.black),
-                                      hintText: 'Input Weight',
-                                      hintStyle: TextStyle(fontSize: 18))),
+                                        borderSide:
+                                            BorderSide(color: Colors.white)),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.white),
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    fillColor: Colors.white,
+                                    filled: true,
+                                    suffixStyle: TextStyle(color: Colors.black),
+                                    suffixText: 'kg',
+                                    labelStyle: TextStyle(
+                                        fontSize: 18, color: Colors.black),
+                                    hintText: 'Input Weight',
+                                    hintStyle: TextStyle(fontSize: 18),
+                                  )),
                                 ),
                               ),
                             ],
@@ -343,6 +358,27 @@ Widget dose(String medication, int weight) {
   }
   if (medication == "Phenoxymethylpenicillin") {
     return Phenoxymethylpenicillin(weight: weight);
+  }
+  if (medication == "Metronidazole") {
+    return Metronidazole(weight: weight);
+  }
+  if (medication == "Flucloxacillin") {
+    return Flucloxacillin(weight: weight);
+  }
+  if (medication == "Rifampicin/Rifampin") {
+    return Rifampicin(weight: weight);
+  }
+  if (medication == "Linezolid") {
+    return Linezolid(weight: weight);
+  }
+  if (medication == "Fluconazole") {
+    return Fluconazole(weight: weight);
+  }
+  if (medication == "Itraconazole") {
+    return Itraconazole(weight: weight);
+  }
+  if (medication == "Prednisolone") {
+    return Prednisolone(weight: weight);
   } else {
     return DefaultMessage();
   }
