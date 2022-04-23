@@ -113,12 +113,7 @@ class _AntiDoseState extends State<AntiDose> {
         },
         child: Scaffold(
           resizeToAvoidBottomInset: false,
-          appBar: AppBar(
-              elevation: 0,
-              title: Text("StritchPharma",
-                  style: TextStyle(fontWeight: FontWeight.bold)),
-              backgroundColor: Color(0xFF0080FF)),
-          backgroundColor: Color(0xFFDDEDED),
+          backgroundColor: Colors.grey[200], //(0xFFDDEDED),
           body: Padding(
             padding: const EdgeInsets.fromLTRB(8, 15, 8, 0),
             child: Container(
@@ -130,28 +125,62 @@ class _AntiDoseState extends State<AntiDose> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     mainAxisSize: MainAxisSize.max,
                     children: [
-                      SizedBox(height: 80),
+                      SizedBox(height: 10),
+                      Flexible(
+                        flex: 2,
+                        child: Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Image.asset(
+                              'assets/images/pharmacy_guild_logo.png'),
+                        ),
+                      ),
+                      Flexible(
+                        flex: 1,
+                        child: Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Text(
+                            "Antibiotic Calculator",
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                      ),
                       Flexible(
                         flex: showFlex,
+                        fit: FlexFit.tight,
                         child: Container(
                           padding: EdgeInsets.all(10),
                           child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            mainAxisSize: MainAxisSize.min,
                             children: [
                               TextField(
                                 focusNode: searchFocus,
                                 style: TextStyle(fontSize: 18),
                                 controller: medController,
                                 onTap: () {
-                                  medController.selection =
-                                      TextSelection.fromPosition(TextPosition(
-                                          offset: medController.text.length));
                                   setState(() {
+                                    myController.clear();
+                                    if (medController.text == "") {
+                                      medController.selection =
+                                          TextSelection.fromPosition(
+                                              TextPosition(offset: 0));
+                                    } else {
+                                      medController.selection =
+                                          TextSelection.fromPosition(
+                                              TextPosition(
+                                                  offset: medController
+                                                      .text.length));
+                                    }
                                     if (medController.text != "") {
                                       iconSelect = Icon(Icons.clear);
                                     }
                                     calculate = false;
                                     hidden = false;
-                                    showFlex = 6;
+                                    showFlex = 8;
                                   });
                                 },
                                 onChanged: (value) {
@@ -182,9 +211,10 @@ class _AntiDoseState extends State<AntiDose> {
                                     onPressed: () {
                                       setState(() {
                                         hidden = false;
-                                        showFlex = 1;
+                                        showFlex = 8;
                                         _runSearch("");
                                         iconSelect = Icon(Icons.search);
+                                        myController.clear();
                                         medController.clear();
                                         searchFocus.requestFocus();
                                         medController.selection =
@@ -196,58 +226,58 @@ class _AntiDoseState extends State<AntiDose> {
                                 ),
                               ),
                               if (hidden != true)
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                              if (hidden != true)
-                                SizedBox(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.55,
-                                  child: _foundMedication.isNotEmpty
-                                      ? ListView.builder(
-                                          shrinkWrap: true,
-                                          keyboardDismissBehavior:
-                                              ScrollViewKeyboardDismissBehavior
-                                                  .onDrag,
-                                          itemCount: _foundMedication.length,
-                                          itemBuilder: (context, index) => Card(
-                                            key: ValueKey(
-                                                _foundMedication[index]["id"]),
-                                            color: Colors.white,
-                                            margin: const EdgeInsets.symmetric(
-                                                vertical: 7),
-                                            child: ListTile(
-                                              onTap: () {
-                                                weightFocus.requestFocus();
-                                                setState(() {
-                                                  iconSelect =
-                                                      Icon(Icons.clear);
-                                                  hidden = true;
-                                                  showFlex = 1;
-                                                  medController.text =
-                                                      "${_foundMedication[index]['name']}";
-                                                  medController.selection =
-                                                      TextSelection.fromPosition(
-                                                          TextPosition(
-                                                              offset:
-                                                                  medController
-                                                                      .text
-                                                                      .length));
-                                                });
-                                              },
-                                              title: Text(
-                                                "${_foundMedication[index]['name']}",
-                                                style: TextStyle(),
+                                Expanded(
+                                  child: SizedBox(
+                                    height: 400,
+                                    child: _foundMedication.isNotEmpty
+                                        ? ListView.builder(
+                                            padding: EdgeInsets.only(top: 10),
+                                            shrinkWrap: true,
+                                            keyboardDismissBehavior:
+                                                ScrollViewKeyboardDismissBehavior
+                                                    .onDrag,
+                                            itemCount: _foundMedication.length,
+                                            itemBuilder: (context, index) =>
+                                                Card(
+                                              key: ValueKey(
+                                                  _foundMedication[index]
+                                                      ["id"]),
+                                              color: Colors.white,
+                                              margin: const EdgeInsets.only(
+                                                  bottom: 10),
+                                              child: ListTile(
+                                                onTap: () {
+                                                  weightFocus.requestFocus();
+                                                  setState(() {
+                                                    iconSelect =
+                                                        Icon(Icons.clear);
+                                                    hidden = true;
+                                                    showFlex = 1;
+                                                    medController.text =
+                                                        "${_foundMedication[index]['name']}";
+                                                    medController.selection =
+                                                        TextSelection.fromPosition(
+                                                            TextPosition(
+                                                                offset:
+                                                                    medController
+                                                                        .text
+                                                                        .length));
+                                                  });
+                                                },
+                                                title: Text(
+                                                  "${_foundMedication[index]['name']}",
+                                                  style: TextStyle(),
+                                                ),
+                                                subtitle: Text(
+                                                    "${_foundMedication[index]['class']}"),
                                               ),
-                                              subtitle: Text(
-                                                  "${_foundMedication[index]['class']}"),
                                             ),
+                                          )
+                                        : const Text(
+                                            'No Medication Found',
+                                            style: TextStyle(fontSize: 16),
                                           ),
-                                        )
-                                      : const Text(
-                                          'No Medication Found',
-                                          style: TextStyle(fontSize: 16),
-                                        ),
+                                  ),
                                 ),
                             ],
                           ),
@@ -305,7 +335,7 @@ class _AntiDoseState extends State<AntiDose> {
                                       )),
                                     ),
                                   ),
-                                  const SizedBox(width: 8),
+                                  SizedBox(width: 8),
                                   Expanded(
                                     flex: 3,
                                     child: ElevatedButton(
@@ -340,7 +370,7 @@ class _AntiDoseState extends State<AntiDose> {
                             ),
                           ),
                         ),
-                      SizedBox(height: 20),
+                      SizedBox(height: 5),
                       if (hidden == true)
                         Flexible(
                           flex: 4,
