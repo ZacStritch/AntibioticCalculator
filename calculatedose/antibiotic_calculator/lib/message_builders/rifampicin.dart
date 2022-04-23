@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../main.dart';
+import 'package:antibiotic_calculator/final_message.dart';
 
 class Rifampicin extends StatelessWidget {
   final int weight;
@@ -20,10 +20,15 @@ class Rifampicin extends StatelessWidget {
             range: 0,
             severe: 0,
             weight: weight),
-        const Text(""),
+        const Divider(
+          color: Colors.blue,
+          height: 20,
+          thickness: 0.5,
+          endIndent: 40,
+        ),
         const Text(
           "Rifampicin/Rifampin should be taken regularly, stop-start dosing can cause flu-like illnesses.",
-          style: TextStyle(color: Colors.red),
+          style: TextStyle(color: Colors.blue),
         ),
       ],
     );

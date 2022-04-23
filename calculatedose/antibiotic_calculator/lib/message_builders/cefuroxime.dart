@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../main.dart';
+import 'package:antibiotic_calculator/final_message.dart';
 
 class Cefuroxime extends StatelessWidget {
   final int weight;
@@ -20,7 +20,12 @@ class Cefuroxime extends StatelessWidget {
             range: 15,
             severe: 0,
             weight: weight),
-        const Text(""),
+        const Divider(
+          color: Colors.blue,
+          height: 20,
+          thickness: 0.5,
+          endIndent: 40,
+        ),
         DrugOutput(
             name: '''Cefuroxime 25mg/mL 
 (2 - 12 Years)''',

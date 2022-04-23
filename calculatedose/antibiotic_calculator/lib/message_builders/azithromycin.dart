@@ -28,10 +28,15 @@ class _Azithryomycin extends State<Azithryomycin> {
             style: TextStyle(fontSize: 15, color: Colors.blue)),
         Text(
             "Administered once on day 1 (Max. 500mg); then once daily for 2 days. Alternatively, after day 1, ${azithromycinRangemL.toStringAsFixed(2).toString()}mL (${azithromycinRangemg.toStringAsFixed(0).toString()}mg) can be taken once daily for 4 days (Max. 250mg)."),
-        const Text(""),
+        const Divider(
+          color: Colors.blue,
+          height: 20,
+          thickness: 0.5,
+          endIndent: 40,
+        ),
         const Text(
             "The higher dose can be given for >3 days depending on the infection.",
-            style: TextStyle(color: Colors.red)),
+            style: TextStyle(color: Colors.blue)),
       ],
     );
   }

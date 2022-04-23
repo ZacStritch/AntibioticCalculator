@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../main.dart';
+import 'package:antibiotic_calculator/final_message.dart';
 
 class Linezolid extends StatelessWidget {
   final int weight;
@@ -19,7 +19,12 @@ class Linezolid extends StatelessWidget {
             range: 0,
             severe: 0,
             weight: weight),
-        const Text(""),
+        const Divider(
+          color: Colors.blue,
+          height: 20,
+          thickness: 0.5,
+          endIndent: 40,
+        ),
         const Text(
             "Avoid foods rich in tyramine (e.g. mature cheese, soy sauce, yeast extracts) when taking this medication. Treatment >28 days is not recommended.",
             style: TextStyle(fontSize: 15, color: Colors.red)),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../main.dart';
+import 'package:antibiotic_calculator/final_message.dart';
 
 class Metronidazole extends StatelessWidget {
   final int weight;

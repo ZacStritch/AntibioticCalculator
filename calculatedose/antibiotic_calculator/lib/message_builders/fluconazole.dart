@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../main.dart';
+import 'package:antibiotic_calculator/final_message.dart';
 
 class Fluconazole extends StatelessWidget {
   final int weight;
@@ -24,6 +24,12 @@ class Fluconazole extends StatelessWidget {
             range: 0,
             severe: 12,
             weight: weight),
+        const Divider(
+          color: Colors.blue,
+          height: 20,
+          thickness: 0.5,
+          endIndent: 40,
+        ),
         DrugOutput(
             name: "Fluconazole 10mg/mL (Systemic Infections)",
             administration:

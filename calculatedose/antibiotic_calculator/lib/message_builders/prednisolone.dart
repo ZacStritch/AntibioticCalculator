@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../main.dart';
+import 'package:antibiotic_calculator/final_message.dart';
 
 class Prednisolone extends StatelessWidget {
   final int weight;
@@ -19,7 +19,12 @@ class Prednisolone extends StatelessWidget {
             range: 2,
             severe: 0,
             weight: weight),
-        const Text(""),
+        const Divider(
+          color: Colors.blue,
+          height: 20,
+          thickness: 0.5,
+          endIndent: 40,
+        ),
         DrugOutput(
             name: "Prednisolone 5mg/mL (Croup)",
             administration:

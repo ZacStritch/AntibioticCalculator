@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../main.dart';
+import 'package:antibiotic_calculator/final_message.dart';
 
 class Amoxycillin extends StatelessWidget {
   final int weight;
@@ -19,7 +19,12 @@ class Amoxycillin extends StatelessWidget {
             range: 25,
             severe: 30,
             weight: weight),
-        const Text(""),
+        const Divider(
+          color: Colors.blue,
+          height: 20,
+          thickness: 0.5,
+          endIndent: 40,
+        ),
         DrugOutput(
             name: "Amoxycillin 250mg/5mL",
             administration: "",
@@ -28,11 +33,14 @@ class Amoxycillin extends StatelessWidget {
             range: 25,
             severe: 30,
             weight: weight),
-        const Text(""),
-        const Text(
-          "Interval of Administration:",
-          style: TextStyle(fontSize: 15, color: Colors.blue),
+        const Divider(
+          color: Colors.blue,
+          height: 20,
+          thickness: 0.5,
+          endIndent: 40,
         ),
+        const Text("Interval of Administration:",
+            style: TextStyle(fontSize: 15, color: Colors.blue)),
         const Text("Every 8 hours (Max. 500mg)."),
       ],
     );
