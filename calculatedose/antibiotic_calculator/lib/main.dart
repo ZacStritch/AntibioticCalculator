@@ -1,4 +1,5 @@
 // ignore_for_file: prefer_const_constructors
+
 import 'package:antibiotic_calculator/message_builders/all_builders.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -50,6 +51,9 @@ class _AntiDoseState extends State<AntiDose> {
   bool textChange = false;
   int showFlex = 1;
 
+  late FocusNode searchFocus;
+  late FocusNode weightFocus;
+
   final myController = TextEditingController();
 
   List<Map<String, dynamic>> _foundMedication = [];
@@ -59,6 +63,8 @@ class _AntiDoseState extends State<AntiDose> {
     FocusManager.instance.primaryFocus?.unfocus();
     _foundMedication = _allMedication;
     super.initState();
+    searchFocus = FocusNode();
+    weightFocus = FocusNode();
   }
 
   void _runSearch(String enteredKeyword) {
@@ -83,6 +89,8 @@ class _AntiDoseState extends State<AntiDose> {
   @override
   void dispose() {
     super.dispose();
+    searchFocus.dispose();
+    weightFocus.dispose();
   }
 
   @override
@@ -122,6 +130,7 @@ class _AntiDoseState extends State<AntiDose> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     mainAxisSize: MainAxisSize.max,
                     children: [
+                      SizedBox(height: 80),
                       Flexible(
                         flex: showFlex,
                         child: Container(
@@ -129,6 +138,7 @@ class _AntiDoseState extends State<AntiDose> {
                           child: Column(
                             children: [
                               TextField(
+                                focusNode: searchFocus,
                                 style: TextStyle(fontSize: 18),
                                 controller: medController,
                                 onTap: () {
@@ -176,20 +186,26 @@ class _AntiDoseState extends State<AntiDose> {
                                         _runSearch("");
                                         iconSelect = Icon(Icons.search);
                                         medController.clear();
+                                        searchFocus.requestFocus();
+                                        medController.selection =
+                                            TextSelection.fromPosition(
+                                                TextPosition(offset: 0));
                                       });
                                     },
                                   ),
                                 ),
                               ),
-                              const SizedBox(
-                                height: 10,
-                              ),
+                              if (hidden != true)
+                                const SizedBox(
+                                  height: 10,
+                                ),
                               if (hidden != true)
                                 SizedBox(
                                   height:
-                                      MediaQuery.of(context).size.height * 0.65,
+                                      MediaQuery.of(context).size.height * 0.55,
                                   child: _foundMedication.isNotEmpty
                                       ? ListView.builder(
+                                          shrinkWrap: true,
                                           keyboardDismissBehavior:
                                               ScrollViewKeyboardDismissBehavior
                                                   .onDrag,
@@ -199,11 +215,10 @@ class _AntiDoseState extends State<AntiDose> {
                                                 _foundMedication[index]["id"]),
                                             color: Colors.white,
                                             margin: const EdgeInsets.symmetric(
-                                                vertical: 10),
+                                                vertical: 7),
                                             child: ListTile(
                                               onTap: () {
-                                                FocusScope.of(context)
-                                                    .unfocus();
+                                                weightFocus.requestFocus();
                                                 setState(() {
                                                   iconSelect =
                                                       Icon(Icons.clear);
@@ -221,7 +236,9 @@ class _AntiDoseState extends State<AntiDose> {
                                                 });
                                               },
                                               title: Text(
-                                                  "${_foundMedication[index]['name']}"),
+                                                "${_foundMedication[index]['name']}",
+                                                style: TextStyle(),
+                                              ),
                                               subtitle: Text(
                                                   "${_foundMedication[index]['class']}"),
                                             ),
@@ -239,75 +256,91 @@ class _AntiDoseState extends State<AntiDose> {
                       if (hidden == true)
                         Flexible(
                           flex: 1,
-                          child: Column(
-                            children: [
-                              Container(
-                                padding: EdgeInsets.all(10),
-                                child: TextFormField(
-                                  onChanged: (myController) {
-                                    setState(() {
-                                      hidden = true;
-                                      calculate = false;
-                                    });
-                                  },
-                                  controller: myController,
-                                  keyboardType: TextInputType.number,
-                                  inputFormatters: <TextInputFormatter>[
-                                    FilteringTextInputFormatter.digitsOnly,
-                                    LengthLimitingTextInputFormatter(3),
-                                  ],
-                                  decoration: (InputDecoration(
-                                    border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(15),
-                                        borderSide:
-                                            BorderSide(color: Colors.white)),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Colors.white),
-                                      borderRadius: BorderRadius.circular(15),
+                          child: IntrinsicHeight(
+                            child: Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: <Widget>[
+                                  Expanded(
+                                    flex: 5,
+                                    child: TextFormField(
+                                      focusNode: weightFocus,
+                                      onChanged: (myController) {
+                                        setState(() {
+                                          hidden = true;
+                                          calculate = false;
+                                        });
+                                      },
+                                      controller: myController,
+                                      keyboardType: TextInputType.number,
+                                      inputFormatters: <TextInputFormatter>[
+                                        FilteringTextInputFormatter.digitsOnly,
+                                        LengthLimitingTextInputFormatter(3),
+                                      ],
+                                      decoration: (InputDecoration(
+                                        border: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                            borderSide: BorderSide(
+                                                color: Colors.white)),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderSide:
+                                              BorderSide(color: Colors.white),
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                        ),
+                                        fillColor: Colors.white,
+                                        filled: true,
+                                        suffixStyle:
+                                            TextStyle(color: Colors.black),
+                                        suffixText: 'kg',
+                                        labelStyle: TextStyle(
+                                            fontSize: 18, color: Colors.black),
+                                        hintText: 'Input Weight',
+                                        hintStyle: TextStyle(fontSize: 18),
+                                      )),
                                     ),
-                                    fillColor: Colors.white,
-                                    filled: true,
-                                    suffixStyle: TextStyle(color: Colors.black),
-                                    suffixText: 'kg',
-                                    labelStyle: TextStyle(
-                                        fontSize: 18, color: Colors.black),
-                                    hintText: 'Input Weight',
-                                    hintStyle: TextStyle(fontSize: 18),
-                                  )),
-                                ),
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Expanded(
+                                    flex: 3,
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        FocusScope.of(context).unfocus();
+                                        setState(() {
+                                          calculate = true;
+                                          Message(
+                                              medication: value ?? "",
+                                              input: int.tryParse(
+                                                      myController.text) ??
+                                                  0);
+                                        });
+                                      },
+                                      child: Text(
+                                        'Calculate',
+                                      ),
+                                      style: ElevatedButton.styleFrom(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(15)),
+                                        primary: Color(0xFF0080FF),
+                                        textStyle: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                        ),
-                      if (hidden == true)
-                        Flexible(
-                          flex: 1,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              FocusScope.of(context).unfocus();
-                              setState(() {
-                                calculate = true;
-                                Message(
-                                    medication: value ?? "",
-                                    input:
-                                        int.tryParse(myController.text) ?? 0);
-                              });
-                            },
-                            child: Text(
-                              'Calculate',
                             ),
-                            style: ElevatedButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15)),
-                                primary: Color(0xFF0080FF),
-                                textStyle: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                fixedSize: const Size(160, 50)),
                           ),
                         ),
+                      SizedBox(height: 20),
                       if (hidden == true)
                         Flexible(
                           flex: 4,
@@ -318,13 +351,14 @@ class _AntiDoseState extends State<AntiDose> {
                               borderRadius: BorderRadius.circular(15),
                             ),
                             padding: EdgeInsets.all(15),
-                            margin: EdgeInsets.fromLTRB(15, 15, 15, 15),
+                            margin: EdgeInsets.all(10),
                             width: 500,
                             child: Message(
                                 medication: medController.text,
                                 input: int.tryParse(myController.text) ?? 0),
                           ),
                         ),
+                      SizedBox(height: 20),
                     ]),
               ),
             ),
