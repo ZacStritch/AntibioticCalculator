@@ -18,6 +18,11 @@ class _MessageState extends State<Message> {
   Widget build(BuildContext context) {
     if (calculate == false || widget.input == 0) {
       return const DefaultMessage();
+    }
+    if (widget.input >= 200) {
+      return const Text("Input weight too high.",
+          style: TextStyle(color: Colors.red, fontSize: 18),
+          textAlign: TextAlign.left);
     } else {
       return dose(widget.medication, widget.input);
     }

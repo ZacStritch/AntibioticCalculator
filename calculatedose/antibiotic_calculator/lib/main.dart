@@ -317,7 +317,7 @@ class _AntiDoseState extends State<AntiDose> {
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(15),
                             ),
-                            padding: EdgeInsets.all(10),
+                            padding: EdgeInsets.all(15),
                             margin: EdgeInsets.fromLTRB(15, 15, 15, 15),
                             width: 500,
                             child: Message(
