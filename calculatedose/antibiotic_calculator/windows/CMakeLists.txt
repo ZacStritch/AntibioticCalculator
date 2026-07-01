@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.14)
-project(antibiotic_calculator LANGUAGES CXX)
+project(DosePilot LANGUAGES CXX)
 
-set(BINARY_NAME "antibiotic_calculator")
+set(BINARY_NAME "DosePilot")
 
 cmake_policy(SET CMP0063 NEW)
 

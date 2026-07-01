@@ -1,6 +1,6 @@
-# StritchPharma
+# DosePilot
 
-StritchPharma is a Flutter-based medication dosing reference app focused on weight-based paediatric oral liquid calculations. It provides a searchable catalogue of medicines, displays dose ranges in both `mL` and `mg`, and includes administration notes and medication-specific cautions where relevant.
+DosePilot is a Flutter-based medication dosing reference app focused on weight-based paediatric oral liquid calculations. It provides a searchable catalogue of medicines, displays dose ranges in both `mL` and `mg`, and includes administration notes and medicine-specific cautions where relevant.
 
 ## What the app does
 
@@ -69,11 +69,13 @@ flutter build ios
 flutter build web
 ```
 
-## Notes
+## Medical disclaimer
 
-- This app is a clinical reference tool, not a substitute for local prescribing guidance or professional judgement.
-- Always verify doses against current institutional protocols and patient-specific factors before use.
-- Weight input is limited to numeric values in kilograms.
+- DosePilot is not an official clinical reference, prescribing authority, or medical device.
+- The app is provided for informational purposes only and does not replace local protocols, specialist advice, institutional policies, or professional clinical judgment.
+- The content may be incomplete, outdated, or inaccurate and must be independently verified before use.
+- To the fullest extent permitted by law, the authors, contributors, and distributors accept no liability or responsibility for any loss, injury, claim, damage, adverse outcome, or other consequence arising from use of, reliance on, or inability to use this software.
+- No warranty is provided, express or implied, including any warranty of accuracy, completeness, fitness for a particular purpose, merchantability, or availability.
 
 ## License
 

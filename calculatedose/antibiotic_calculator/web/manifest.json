@@ -1,11 +1,11 @@
 {
-    "name": "antibiotic_calculator",
-    "short_name": "antibiotic_calculator",
+    "name": "DosePilot",
+    "short_name": "DosePilot",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "DosePilot is a medication dosing reference app for weight-based paediatric calculations.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

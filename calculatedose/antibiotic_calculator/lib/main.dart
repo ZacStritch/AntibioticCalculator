@@ -18,7 +18,7 @@ class AntiDoseApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'StritchPharma',
+      title: 'DosePilot',
       theme: ThemeData(
         primaryColor: const Color(0xFF0080FF),
         scaffoldBackgroundColor: const Color(0xFFDDEDED),
@@ -172,7 +172,7 @@ class _AntiDoseState extends State<AntiDose> {
         resizeToAvoidBottomInset: true,
         appBar: AppBar(
           title: const Text(
-            'StritchPharma',
+            'DosePilot',
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
