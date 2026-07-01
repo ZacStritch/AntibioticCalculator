@@ -27,7 +27,7 @@ class Cefuroxime extends StatelessWidget {
           endIndent: 40,
         ),
         DrugOutput(
-            name: '''Cefuroxime 25mg/mL 
+            name: '''Cefuroxime 50mg/mL 
 (2 - 12 Years)''',
             administration:
                 "With food twice a day (Max. 250mg); Up to 500mg has been administered before.",

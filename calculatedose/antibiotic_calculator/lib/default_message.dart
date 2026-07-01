@@ -5,7 +5,7 @@ class DefaultMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Text("Input a medication & weight.",
+    return const Text("Input a medication and weight.",
         style: TextStyle(color: Colors.grey, fontSize: 18),
         textAlign: TextAlign.left);
   }

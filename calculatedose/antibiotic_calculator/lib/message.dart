@@ -1,30 +1,34 @@
-import 'package:antibiotic_calculator/default_message.dart';
-import 'package:antibiotic_calculator/main.dart';
 import 'package:flutter/material.dart';
 
-class Message extends StatefulWidget {
+import 'default_message.dart';
+import 'dose.dart';
+
+class Message extends StatelessWidget {
   final String medication;
   final int input;
+  final bool shouldCalculate;
 
-  const Message({Key? key, required this.medication, required this.input})
-      : super(key: key);
+  const Message({
+    Key? key,
+    required this.medication,
+    required this.input,
+    required this.shouldCalculate,
+  }) : super(key: key);
 
-  @override
-  State<Message> createState() => _MessageState();
-}
-
-class _MessageState extends State<Message> {
   @override
   Widget build(BuildContext context) {
-    if (calculate == false || widget.input == 0) {
+    if (!shouldCalculate || medication.isEmpty || input == 0) {
       return const DefaultMessage();
     }
-    if (widget.input >= 200) {
-      return const Text("Input weight too high.",
-          style: TextStyle(color: Colors.red, fontSize: 18),
-          textAlign: TextAlign.left);
-    } else {
-      return dose(widget.medication, widget.input);
+
+    if (input >= 200) {
+      return const Text(
+        'Input weight too high.',
+        style: TextStyle(color: Colors.red, fontSize: 18),
+        textAlign: TextAlign.left,
+      );
     }
+
+    return dose(medication, input);
   }
 }
